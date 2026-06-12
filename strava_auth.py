@@ -4,7 +4,7 @@ from urllib.parse import urlencode, urlparse, parse_qs
 
 CLIENT_ID = "184138"
 CLIENT_SECRET = "bc7aa21501aa1e9c54e6a87b6afaa9a681dd2787"
-REDIRECT_URI = "https://anger-lung-deceiver.ngrok-free.dev"
+REDIRECT_URI = "https://modeled.streamlit.app/"
 SCOPE = "read,activity:read_all"
 
 
