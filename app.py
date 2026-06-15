@@ -18,6 +18,8 @@ from strava_auth import (
 MIN_VALID_HR_WEEKS = 8
 # Weeks used to let the recursive fitness/fatigue model stabilize
 # before showing results to the user.
+MIN_AVG_HR_COVERAGE = 0.50
+# At least 50% of the runs need HR data
 HIDDEN_WARMUP_WEEKS = 8
 FEEDBACK_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSe41DSa9itRq03XgmYu3l3ruuWjkpp5LQi6S6L5LZc57CeVfg/viewform?usp=publish-editor"
 LOGO_FILE = "Modeled_Logo_Beta.png"
@@ -226,17 +228,38 @@ def validate_model_data(df):
 
     if "totalrunningmiles" in df.columns:
         running_weeks = int((df["totalrunningmiles"] > 0).sum())
+
         if running_weeks == 0:
             return False, "No running weeks were found."
+
+    else:
+        running_weeks = len(df)
 
     valid_hr_weeks = df.dropna(subset=["avgpace", "avgrunhr"])
 
     if len(valid_hr_weeks) < MIN_VALID_HR_WEEKS:
         return False, (
-            f"Not enough heart-rate data to run the HR-based fitness model. "
+            "Modeled could not run because there is not enough heart-rate data. "
             f"The model needs at least {MIN_VALID_HR_WEEKS} weeks with both pace and average running HR. "
-            f"This selected range has {len(valid_hr_weeks)} valid HR weeks."
+            f"This selected range has {len(valid_hr_weeks)} valid HR weeks. "
+            "Try selecting a longer date range, syncing more activities with HR data, "
+            "or using a chest strap/watch that records heart rate."
         )
+
+    if "hr_coverage" in df.columns and "totalrunningmiles" in df.columns:
+        running_df = df[df["totalrunningmiles"] > 0].copy()
+
+        if len(running_df) > 0:
+            avg_hr_coverage = float(running_df["hr_coverage"].fillna(0).mean())
+
+            if avg_hr_coverage < MIN_AVG_HR_COVERAGE:
+                return False, (
+                    "Modeled could not run because heart-rate coverage is too low. "
+                    f"The model needs at least {MIN_AVG_HR_COVERAGE * 100:.0f}% average HR coverage "
+                    f"across running weeks. This selected range has {avg_hr_coverage * 100:.1f}% HR coverage. "
+                    "Manual uploads and activities without HR can still count toward mileage, "
+                    "but the HR-based fitness model needs enough heart-rate data to estimate fitness reliably."
+                )
 
     if df["totalmayomiles"].std(ddof=1) == 0:
         return False, (
