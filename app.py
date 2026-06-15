@@ -83,6 +83,33 @@ def show_model_explanation():
             "but if they do not include heart-rate data, the HR-based part of the model becomes less reliable."
         )
 
+def show_privacy_and_data_use():
+    with st.expander("Privacy and Data Use"):
+        st.write(
+            "Modeled uses your authorized Strava activity data only to calculate your personal "
+            "training dashboard."
+        )
+
+        st.write(
+            "The app uses activity details such as activity type, start date, moving time, "
+            "distance, average pace, and average heart rate to estimate weekly fitness trends."
+        )
+
+        st.write(
+            "Your activity data is shown only to you inside your own dashboard. Modeled does not "
+            "display your private Strava activity data to other users."
+        )
+
+        st.write(
+            "Modeled does not sell your Strava data and does not use your Strava activity data "
+            "to train AI models."
+        )
+
+        st.write(
+            "Because this is an early testing version, results should be treated as experimental. "
+            "The model is intended to help athletes better understand training trends, not to provide "
+            "medical advice or guaranteed race predictions."
+        )
 
 def show_feedback_form():
     st.divider()
