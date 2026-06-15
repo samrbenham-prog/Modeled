@@ -350,6 +350,11 @@ if data_source == "Connect Strava":
         f"using {max_pages} API request page(s)."
     )
 
+    st.warning(
+        "Please only pull your Strava data once and wait for the model to finish before refreshing "
+        "or clicking again. Repeated pulls can slow the app down and may use up Strava API requests."
+    )
+    
     if strava_code:
         st.success("Strava authorization code received.")
 
