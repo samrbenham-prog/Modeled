@@ -260,6 +260,7 @@ st.write(
 )
 
 show_model_explanation()
+show_privacy_and_data_use()
 show_project_presentation()
 
 
@@ -329,8 +330,8 @@ if data_source == "Connect Strava":
     if strava_code:
         st.success("Strava authorization code received.")
 
-        if strava_scope:
-            st.write(f"Accepted scope: {strava_scope}")
+#        if strava_scope:
+#            st.write(f"Accepted scope: {strava_scope}")
 
         if strava_scope is None or "activity:read_all" not in strava_scope:
             st.warning(
