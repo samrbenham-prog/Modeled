@@ -49,7 +49,7 @@ def format_pace(decimal_minutes):
 def show_model_explanation():
     with st.expander("What does this model measure?"):
         st.write(
-            "This model estimates running fitness from weekly training volume, pace, "
+            "This model ESTIMATES running fitness from weekly training volume, pace, "
             "and heart-rate efficiency. It looks at how much training an athlete did, "
             "how fast they were running, and whether their average running heart rate "
             "was better or worse than expected for that pace."
